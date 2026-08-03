@@ -163,11 +163,15 @@ h1, h2, h3, h4 {
     text-align: center;
 }
 .preloader-logo {
-    width: 80px;
-    height: 80px;
+    width: 84px;
+    height: 84px;
     border-radius: 50%;
     margin: 0 auto 16px auto;
     display: block;
+    object-fit: contain;
+    background: var(--white);
+    padding: 4px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
 }
 .preloader-bar {
     width: 140px;
@@ -217,9 +221,12 @@ h1, h2, h3, h4 {
 }
 
 .nav-logo {
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
+    object-fit: contain;
+    background: var(--white);
+    padding: 2px;
 }
 
 .nav-brand-text { display: flex; flex-direction: column; }
