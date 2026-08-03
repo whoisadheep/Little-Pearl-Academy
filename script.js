@@ -1,10 +1,27 @@
 /* ═══════════════════════════════════════════════════════════
    LITTLE PEARL ACADEMY — Clean Mobile & Interactive JS
-   Handles: Preloader, Navbar, Mobile Menu, Gallery Filter,
-            Gallery Lightbox, Back to Top, Ticker Loop
+   Handles: Lenis Smooth Scroll, Preloader, Navbar, Mobile Menu,
+            Gallery Filter, Lightbox, Back to Top, Ticker Loop
    ═══════════════════════════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', () => {
+
+    // ─── Lenis Smooth Scroll Setup ───
+    let lenis = null;
+    if (typeof Lenis !== 'undefined') {
+        lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smoothWheel: true,
+            touchMultiplier: 1.5,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+    }
 
     // ─── Preloader ───
     const preloader = document.getElementById('preloader');
@@ -79,15 +96,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ─── Smooth Scroll ───
+    // ─── Smooth Scroll with Lenis ───
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
-                const offset = 70;
-                const top = target.getBoundingClientRect().top + window.scrollY - offset;
-                window.scrollTo({ top, behavior: 'smooth' });
+                if (lenis) {
+                    lenis.scrollTo(target, { offset: -70 });
+                } else {
+                    const top = target.getBoundingClientRect().top + window.scrollY - 70;
+                    window.scrollTo({ top, behavior: 'smooth' });
+                }
             }
         });
     });
@@ -191,7 +211,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { passive: true });
 
         backToTop.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (lenis) {
+                lenis.scrollTo(0);
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         });
     }
 
