@@ -199,6 +199,61 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // ─── Mandatory Disclosure PDF Controls ───
+    const btnTogglePreview = document.getElementById('btnTogglePreview');
+    const previewBtnText = document.getElementById('previewBtnText');
+    const pdfViewerContainer = document.getElementById('pdfViewerContainer');
+
+    if (btnTogglePreview && pdfViewerContainer) {
+        btnTogglePreview.addEventListener('click', () => {
+            const isCollapsed = pdfViewerContainer.classList.toggle('collapsed');
+            if (previewBtnText) {
+                previewBtnText.textContent = isCollapsed ? 'Preview Document' : 'Hide Preview';
+            }
+            if (!isCollapsed && lenis) {
+                lenis.scrollTo(pdfViewerContainer, { offset: -80 });
+            }
+        });
+    }
+
+    // ─── PDF Fullscreen Modal Lightbox ───
+    const btnFullscreenModal = document.getElementById('btnFullscreenModal');
+    const pdfModal = document.getElementById('pdfModal');
+    const pdfModalClose = document.getElementById('pdfModalClose');
+    const pdfModalBackdrop = document.getElementById('pdfModalBackdrop');
+
+    if (pdfModal) {
+        function openPdfModal() {
+            pdfModal.classList.add('active');
+            pdfModal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePdfModal() {
+            pdfModal.classList.remove('active');
+            pdfModal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        if (btnFullscreenModal) {
+            btnFullscreenModal.addEventListener('click', openPdfModal);
+        }
+
+        if (pdfModalClose) {
+            pdfModalClose.addEventListener('click', closePdfModal);
+        }
+
+        if (pdfModalBackdrop) {
+            pdfModalBackdrop.addEventListener('click', closePdfModal);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && pdfModal.classList.contains('active')) {
+                closePdfModal();
+            }
+        });
+    }
+
     // ─── Back to Top Button ───
     const backToTop = document.getElementById('backToTop');
     if (backToTop) {
